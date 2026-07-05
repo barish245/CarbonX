@@ -7,7 +7,6 @@
 *On-chain carbon credit verification, trading, and retirement secured by Stellar Soroban smart contracts*
 
 [![Live Demo](https://img.shields.io/badge/Live_Demo-carbonx--stellar.netlify.app-16a34a?style=for-the-badge&logo=netlify)](https://carbonx-stellar.netlify.app/)
-[![Vercel Demo](https://img.shields.io/badge/Vercel_Mirror-carbon--x--jade.vercel.app-000000?style=for-the-badge&logo=vercel)](https://carbon-x-jade.vercel.app/)
 [![GitHub](https://img.shields.io/badge/Source_Code-barish245%2FCarbonX-181717?style=for-the-badge&logo=github)](https://github.com/barish245/CarbonX)
 [![Network](https://img.shields.io/badge/Network-Stellar_Testnet-00B4D8?style=for-the-badge&logo=stellar)](https://stellar.expert/explorer/testnet)
 [![Built for RiseIn](https://img.shields.io/badge/Built_for-RiseIn_Level_4-f59e0b?style=for-the-badge)](https://www.risein.com/)
@@ -69,8 +68,7 @@ CarbonX is not a generic blockchain application. It is a protocol that specifica
 
 | Resource | Link |
 |----------|------|
-| 🌍 **Live dApp (Netlify)** | [carbonx-stellar.netlify.app](https://carbonx-stellar.netlify.app/) |
-| 🌍 **Live dApp (Vercel)** | [carbon-x-jade.vercel.app](https://carbon-x-jade.vercel.app/) |
+| 🌍 **Live dApp** | [carbonx-stellar.netlify.app](https://carbonx-stellar.netlify.app/) |
 | 🎬 **Demo Video** | [Google Drive — Walkthrough Recording](https://drive.google.com/file/d/1tI_jgWIF61P4U1DNgw2Ns23d2vVSuNb3/view?usp=sharing) |
 | 💻 **GitHub Repo** | [barish245/CarbonX](https://github.com/barish245/CarbonX) |
 | 📋 **User Feedback Form** | [CarbonX Feedback — Google Forms](https://forms.gle/4PRxsnXBNGUrtvrB9) |
