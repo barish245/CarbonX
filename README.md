@@ -209,7 +209,7 @@ The following security audits and production improvements were implemented and t
 ### 📱 Diagnostics & Telemetry Dashboard
 ![Diagnostics](sub%20assets/ui1.png)
 
-### 📈 Vercel Web Analytics
+### 📈 Analytics
 ![Vercel Analytics](sub%20assets/analytics.png)
 
 ### 🔄 CI/CD Pipeline
