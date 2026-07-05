@@ -1,122 +1,257 @@
-# 🌍 CarbonX — Decentralized Carbon Credit Marketplace on Stellar
+# 🌍 CarbonX
 
-> **A production-grade dApp built with Soroban Smart Contracts, enabling SMEs to transparently list, trade, verify, and retire tokenized carbon credits.**
+<div align="center">
 
-[![CI/CD Pipeline](https://github.com/praveengarakot/CarbonX/actions/workflows/main.yml/badge.svg)](https://github.com/praveengarakot/CarbonX/actions/workflows/main.yml)
-[![Live Demo](https://img.shields.io/badge/Live%20Demo-carbonx--stellar.netlify.app-brightgreen?logo=netlify)](https://carbonx-stellar.netlify.app/)
-[![Network](https://img.shields.io/badge/Network-Stellar%20Testnet-blue?logo=stellar)](https://stellar.org)
-[![License](https://img.shields.io/badge/License-MIT-yellow)](LICENSE)
+**Decentralized Carbon Credit Marketplace for SMEs**
+
+*On-chain carbon credit verification, trading, and retirement secured by Stellar Soroban smart contracts*
+
+[![Live Demo](https://img.shields.io/badge/Live_Demo-carbonx--stellar.netlify.app-16a34a?style=for-the-badge&logo=netlify)](https://carbonx-stellar.netlify.app/)
+[![Vercel Demo](https://img.shields.io/badge/Vercel_Mirror-carbon--x--jade.vercel.app-000000?style=for-the-badge&logo=vercel)](https://carbon-x-jade.vercel.app/)
+[![GitHub](https://img.shields.io/badge/Source_Code-barish245%2FCarbonX-181717?style=for-the-badge&logo=github)](https://github.com/barish245/CarbonX)
+[![Network](https://img.shields.io/badge/Network-Stellar_Testnet-00B4D8?style=for-the-badge&logo=stellar)](https://stellar.expert/explorer/testnet)
+[![Built for RiseIn](https://img.shields.io/badge/Built_for-RiseIn_Level_4-f59e0b?style=for-the-badge)](https://www.risein.com/)
+
+</div>
 
 ---
 
-## 🎬 Demo Video
+## 📋 Table of Contents
 
-[![CarbonX Demo](https://img.shields.io/badge/Watch%20Demo-Google%20Drive-red?logo=googledrive&style=for-the-badge)](https://drive.google.com/file/d/1tI_jgWIF61P4U1DNgw2Ns23d2vVSuNb3/view?usp=sharing)
+1. [Problem Statement](#-problem-statement)
+2. [Why Stellar?](#-why-stellar)
+3. [Live Deployment](#-live-deployment)
+4. [Contract Addresses & Transactions](#-contract-addresses--transactions)
+5. [User Onboarding & Feedback](#-user-onboarding--feedback)
+6. [Architecture](#-architecture)
+7. [Smart Contracts](#-smart-contracts)
+8. [Production Hardening (Level 4)](#-production-hardening-level-4)
+9. [Tech Stack](#-tech-stack)
+10. [Project Structure](#-project-structure)
+11. [Testing](#-testing)
+12. [CI/CD Pipeline](#-cicd-pipeline)
+13. [Local Development](#-local-development)
+14. [Roadmap](#-roadmap)
+15. [Author](#-author)
 
-> Click the badge above to watch the full walkthrough of the CarbonX platform.
+---
+
+## 🟢 Problem Statement
+
+Small and Medium Enterprises (SMEs) represent 90% of global businesses, but they are effectively shut out of the voluntary carbon market.
+
+| Issue | Impact |
+|-------|--------|
+| **Opaque Verification** | Carbon verification is prohibitively expensive (often $20k–$100k) and favors legacy brokers |
+| **Double-Counting Risk** | Opacity in registries leads to double-counting and fraud, reducing corporate trust in offsets |
+| **Settlement Delays** | Legacy trading settlements can take weeks and carry high international transaction fees |
+| **Opaque Disputes** | Buyers lack public proof of retirement when offsetting credits for ESG compliance |
+
+**CarbonX** replaces centralized brokers and registries with programmable, auditable Soroban smart contracts. SME developers submit carbon offsets, authorized auditors verify them on-chain, and buyers can purchase, trade, or permanently retire credits transparently with atomic settlements — removing intermediaries and enabling access for all.
+
+---
+
+## 🌟 Why Stellar?
+
+CarbonX is not a generic blockchain application. It is a protocol that specifically requires Stellar's unique network architecture:
+
+| Stellar Property | CarbonX Benefit |
+|-----------------|-----------------|
+| **~5 second finality** | Credit sales and payments settle instantly without settlement risk |
+| **Sub-cent fees ($0.00001)** | Enables micro-tokenization of small-scale local projects (e.g. municipal solar/small farms) |
+| **Soroban Inter-Contract Calls** | Coordinates Verification, Registry, Marketplace, and Settlement contracts atomically |
+| **Built-in Assets / Trustlines** | Exposes secure, native tokenization for carbon offsets |
+| **Fee Bump Transactions** | Gasless onboarding - sponsors transaction fees for non-crypto-native SMEs |
 
 ---
 
 ## 🌐 Live Deployment
 
-| Environment | URL |
-|-------------|-----|
-| 🚀 Production (Netlify) | [https://carbonx-stellar.netlify.app/](https://carbonx-stellar.netlify.app/) |
-| 🔗 Stellar Network | Testnet |
+| Resource | Link |
+|----------|------|
+| 🌍 **Live dApp (Netlify)** | [carbonx-stellar.netlify.app](https://carbonx-stellar.netlify.app/) |
+| 🌍 **Live dApp (Vercel)** | [carbon-x-jade.vercel.app](https://carbon-x-jade.vercel.app/) |
+| 🎬 **Demo Video** | [Google Drive — Walkthrough Recording](https://drive.google.com/file/d/1tI_jgWIF61P4U1DNgw2Ns23d2vVSuNb3/view?usp=sharing) |
+| 💻 **GitHub Repo** | [barish245/CarbonX](https://github.com/barish245/CarbonX) |
+| 📋 **User Feedback Form** | [CarbonX Feedback — Google Forms](https://forms.gle/4PRxsnXBNGUrtvrB9) |
+| 📊 **Onboarded Users & Wallet Responses** | [Responses Spreadsheet — Google Sheets](https://docs.google.com/spreadsheets/d/1KexebLah9jnwBw1FSgdf25AH0dZRlAAfd98PtGuVFIE/edit?resourcekey=&gid=2100511142#gid=2100511142) |
 
 ---
 
-## 📸 Application Screenshots
+## 🔗 Contract Addresses & Transactions
 
-### Dashboard Overview
-![Dashboard Overview](sub%20assets/ui1.png)
+All contracts are deployed and cross-initialized on the **Stellar Testnet**.
 
-### Carbon Credit Marketplace
-![Carbon Marketplace](sub%20assets/ui2.png)
+### Deployed Contract IDs
 
-### Verification Portal
-![Verification Portal](sub%20assets/ui3.png)
+| Contract | Address |
+|----------|---------|
+| **Verification Contract** | `CC7Q43DUGVPSKSXPOYT4TTSXTXEJAICL7N6LT5GB4ZN5UR3Y6T5VKVFQ` |
+| **Carbon Registry** | `CAV5ID4RDPAC5DOMOKRWH2YUORQHYRGJBWRTXG33RLBCKDMS333FA2MD` |
+| **Marketplace** | `CC4SBE33FC2AL3K77BQIJOFHO7RVDAKQFVTOLQARF6SHLOTIYV2MXYIY` |
+| **Settlement** | `CDXRNXG33D2MGTWX7VZJ3WO5ORHPOUTQN2WGQP6AJNJQUBD7TSUWXN5P` |
+| **Retirement** | `CCKX33TYO6FRCJV4BDOO73VVCKIOTF6DNZH6KPAWOXVBML7UGTK7V5JH` |
 
-### Retirement & Impact Score
-![Retirement Portal](sub%20assets/ui4.png)
-
-### Mobile View
-![Mobile UI](sub%20assets/mobui.png)
-
----
-
-## 🚀 Key Features
-
-| Feature | Description |
-|---------|-------------|
-| 🔗 **Multi-Contract Architecture** | 5 specialized Rust/Soroban contracts communicating via inter-contract calls |
-| 🌱 **On-Chain Carbon Registry** | Secure minting, balance tracking, and retirement of tokenized carbon credits |
-| ✅ **Verification Workflow** | Decoupled project submissions, third-party auditor verification, and automated credit minting |
-| 💱 **Decentralized Marketplace** | Active credit listings, escrow management, and real-time settlement |
-| 🏆 **Carbon Impact Score** | Retiring credits mints retirement certificates and raises buyer's on-chain Carbon Score |
-| 👛 **Freighter Wallet Integration** | Non-custodial login and Soroban transaction authorization |
-| 🔄 **Event Streaming** | Live activity feed of all on-chain events (contract calls, settlements, retirements) |
-| 📱 **Mobile Responsive** | Fully responsive UI across desktop, tablet, and mobile |
-| 🚦 **CI/CD Pipeline** | GitHub Actions workflow: contract tests → lint → unit tests → build |
+- **Transaction Hash (Verification Init)**: `0x1f0d36675fd2884a229a8f273be8a74e50d60c49`
 
 ---
 
-## 🏛️ Smart Contract Architecture
+## 👥 User Onboarding & Feedback
 
-The project employs a modular production architecture, split into **5 core Soroban contracts** deployed to the Stellar Testnet:
+As part of the Level 4 production MVP requirements, we onboarded real users to validate the complete carbon credit lifecycle on the Stellar Testnet.
 
-```mermaid
-graph TD
-    Developer[👨‍💼 Developer] -->|1. Submit Project| VC[Verification Contract]
-    Verifier[🔍 Verifier] -->|2. Approve Project| VC
-    VC -->|3. Inter-Contract: mint| CR[Carbon Registry]
-    
-    Seller[💼 Seller] -->|4. List Credit| MC[Marketplace Contract]
-    MC -->|Escrow Transfer| CR
-    
-    Buyer[🛒 Buyer] -->|5. Buy Credit| MC
-    MC -->|6. Inter-Contract: settle| SC[Settlement Contract]
-    MC -->|7. Transfer Credit| CR
-    
-    Buyer -->|8. Retire Credit| RC[Retirement Contract]
-    RC -->|9. Inter-Contract: retire| CR
-    
-    style VC fill:#16a34a,color:#fff
-    style CR fill:#0284c7,color:#fff
-    style MC fill:#7c3aed,color:#fff
-    style SC fill:#b45309,color:#fff
-    style RC fill:#dc2626,color:#fff
+**Onboarding Journey:**
+
+```
+1. SME registers on CarbonX → Funds testnet account via Friendbot
+2. Developer submits carbon offset project
+3. Auditor verifies project (Triggering Registry minting via Inter-Contract Call)
+4. Developer lists credits on the Marketplace
+5. Buyer purchases listing (XLM settles to seller; credit ownership updates)
+6. Buyer retires credits (Generating Retirement Certificate & updating Carbon Score)
+7. User submits feedback via the Google Form
 ```
 
-### Contract Descriptions
-
-#### 1. 🔍 Verification Contract (`verification-contract`)
-- Handles registration of authorized auditors/verifiers
-- Allows developers to submit projects with `tCO2e` offset amounts
-- Triggers **inter-contract call** to `CarbonRegistry` to mint credits upon successful verification
-
-#### 2. 📋 Carbon Registry (`carbon-registry`)
-- Tracks total supply, individual balances, and retirement states of all credits
-- Enforces minting authorization checks — only the Verification Contract can mint
-- Executes both registry transfers and marketplace-driven credit transfers
-
-#### 3. 🏪 Marketplace Contract (`marketplace-contract`)
-- Facilitates listing of carbon credits at designated prices
-- Holds listed credits in contract-managed **escrow**
-- Processes purchases via inter-contract calls to the registry and settlement contracts
-
-#### 4. 💸 Settlement Contract (`settlement-contract`)
-- Manages on-chain XLM payment settlements between buyers and sellers
-- Emits `pay_lock` and `pay_release` events consumed by the real-time activity feed
-
-#### 5. 🏆 Retirement Contract (`retirement-contract`)
-- Executes credit retirement through the registry (marks credits as permanently retired)
-- Issues on-chain **retirement certificates**
-- Calculates and increments the buyer's Carbon Impact Score (capped at 100)
+| Resource | Link |
+|----------|------|
+| 📋 **Feedback Form** | [Submit Feedback](https://forms.gle/4PRxsnXBNGUrtvrB9) |
+| 📊 **User Responses & Wallet Proof** | [View Spreadsheet](https://docs.google.com/spreadsheets/d/1KexebLah9jnwBw1FSgdf25AH0dZRlAAfd98PtGuVFIE/edit?resourcekey=&gid=2100511142#gid=2100511142) |
 
 ---
 
-## 📂 Project Structure
+## 🏗️ Architecture
+
+CarbonX is composed of 5 Soroban smart contracts that communicate via Inter-Contract Calls (ICC), and a Next.js frontend that builds and submits signed Stellar transactions.
+
+```
+                  ┌─────────────────┐
+                  │ Verification SC │
+                  └────────┬────────┘
+                           │
+                     (ICC: mint)
+                           ▼
+                  ┌─────────────────┐
+                  │ Carbon Registry │◀────────────────┐
+                  └────────┬────────┘                 │
+                           │                          │
+                 (ICC: transfer)               (ICC: retire)
+                           ▼                          │
+                  ┌─────────────────┐        ┌────────┴────────┐
+                  │ Marketplace SC  │        │  Retirement SC  │
+                  └────────┬────────┘        └─────────────────┘
+                           │
+                     (ICC: settle)
+                           ▼
+                  ┌─────────────────┐
+                  │  Settlement SC  │
+                  └─────────────────┘
+```
+
+### Inter-Contract Communication (ICC) Flow
+
+The ICC design is the architectural centerpiece of CarbonX. All registry state changes are triggered atomically:
+1. **Verification ➡️ Registry**: When the verifier approves a project, the Verification Contract uses ICC to mint credits to the developer.
+2. **Marketplace ➡️ Settlement & Registry**: When a buyer purchases a listing, the Marketplace contract locks/settles XLM via the Settlement Contract and transfers the registry token ownership via the Registry contract.
+3. **Retirement ➡️ Registry**: When a user retires credits, the Retirement Contract marks them retired in the Registry and issues a certificate.
+
+---
+
+## 📜 Smart Contracts
+
+### 1. 🔍 Verification Contract (`verification-contract`)
+- Registers authorized verifiers.
+- Submits carbon reduction projects.
+- Calls `CarbonRegistry` to mint credits upon verification.
+
+### 2. 📋 Carbon Registry (`carbon-registry`)
+- Tracks total supply, individual credit ownership balances, and retirement states.
+- Restricts minting to the Verification Contract only.
+
+### 3. 🏪 Marketplace Contract (`marketplace-contract`)
+- Holds listed credits in contract-managed escrow.
+- Facilitates buy and listing cancel transactions.
+
+### 4. 💸 Settlement Contract (`settlement-contract`)
+- Emits lock and release payment events.
+- Handles payments between buyers and sellers.
+
+### 5. 🏆 Retirement Contract (`retirement-contract`)
+- Permanently retires credits via the Registry.
+- Updates the buyer's Carbon Score and issues certificates.
+
+---
+
+## 🛡️ Production Hardening (Level 4)
+
+The following security audits and production improvements were implemented and tested in Level 4:
+
+### Smart Contract Hardening
+- **Initialization Guard**: Prevents contracts from being reinitialized after deployment.
+- **Milestone & Input Bounds Check**: Enforces positive offset volumes and non-empty project names.
+- **Double-spending Escrow Guard**: Enforces that listed credits are locked in the marketplace contract, preventing double-selling.
+- **Instance TTL Extension**: Extends the storage life of ledger entries to prevent expiry.
+
+### Frontend Production Quality
+- **Telemetry System**: Created a visual telemetry interface logging user actions and Stellar transaction lifetimes in real time.
+- **Transactional Spinner states**: Added clear, non-blocking loading states during wallet interaction and Friendbot funding.
+- **Graceful Error Banners**: Intercepts wallet cancellations and underfunded account errors with helpful user guidance.
+- **Floating Feedback Button**: Easily accessible feedback loop in the main layout pointing to the Google Form.
+
+### Monitoring & Analytics
+- **Vercel Analytics & Speed Insights**: Integrated tracking in `layout.js` to monitor page loads, speed indexes, and client errors.
+- **Google Form responses database**: Connected to Excel/Sheets logs to verify 10+ wallet interactions.
+
+---
+
+## 📸 Submission Screenshots
+
+### 🖥️ Carbon Marketplace UI
+![Marketplace](sub%20assets/ui2.png)
+
+### 📱 Diagnostics & Telemetry Dashboard
+![Diagnostics](sub%20assets/ui1.png)
+
+### 📈 Vercel Web Analytics
+![Vercel Analytics](sub%20assets/analytics.png)
+
+### 🔄 CI/CD Pipeline
+![CI/CD Pipeline](sub%20assets/cicd.png)
+
+---
+
+## 🧪 Testing
+
+### Test Summary
+
+| Suite | Tests | Status |
+|-------|-------|--------|
+| Frontend (Vitest) | 3 tests | ✅ All Passing |
+| Rust Contracts | 1 test (Full Flow) | ✅ All Passing |
+
+```bash
+# Run contract tests
+cd contracts && cargo test
+
+# Run frontend tests
+cd frontend && npm test
+```
+
+---
+
+## 🛠️ Tech Stack
+
+| Layer | Technology | Purpose |
+|-------|-----------|---------|
+| **Frontend Framework** | Next.js 16 (App Router) | SSR, client routing, production builds |
+| **blockchain SDK** | @stellar/stellar-sdk | Transaction building & RPC interaction |
+| **Wallet Integration** | StellarWalletsKit & Freighter | Freighter login and testnet signatures |
+| **Smart Contracts** | Soroban (Rust) | On-chain registry, verification & trade logic |
+| **Analytics & Monitoring** | Vercel Analytics | Real-time web performance & crash reports |
+| **CI/CD** | GitHub Actions | Automated lint, build, and test pipeline |
+
+---
+
+## 📁 Project Structure
 
 ```
 CarbonX/
@@ -124,168 +259,54 @@ CarbonX/
 │   └── workflows/
 │       └── main.yml              # CI/CD Pipeline (GitHub Actions)
 ├── contracts/                    # Soroban Smart Contracts (Rust)
-│   ├── carbon-registry/          # Core credit ledger & token logic
-│   ├── marketplace-contract/     # Listing, escrow & purchase logic
-│   ├── retirement-contract/      # Credit retirement & impact score
-│   ├── settlement-contract/      # Payment & settlement logic
-│   └── verification-contract/    # Project submission & auditor logic
-├── frontend/                     # Next.js 16 App (App Router)
-│   ├── __tests__/                # Vitest unit & integration tests
+│   ├── carbon-registry/          # Core credit ledger
+│   ├── marketplace-contract/     # Escrow & listing logic
+│   ├── retirement-contract/      # Credit retirement
+│   ├── settlement-contract/      # Payment logic
+│   └── verification-contract/    # Auditor & submission logic
+├── frontend/                     # Next.js App
+│   ├── __tests__/                # Vitest unit tests
 │   ├── src/
 │   │   ├── app/
-│   │   │   ├── page.jsx          # Main application (all dashboards)
-│   │   │   ├── layout.js         # Root layout (fonts, metadata)
-│   │   │   └── globals.css       # Global styles & design tokens
+│   │   │   ├── page.jsx          # Main application file
+│   │   │   └── layout.js         # Layout with Vercel Analytics
 │   │   └── lib/
-│   │       └── stellar.js        # Stellar SDK + Freighter integration
-│   ├── package.json
-│   └── next.config.mjs
-├── sub assets/                   # Demo assets
-│   ├── demo.mp4                  # Demo video
-│   ├── ui1.png                   # Dashboard screenshot
-│   ├── ui2.png                   # Marketplace screenshot
-│   ├── ui3.png                   # Verification portal screenshot
-│   ├── ui4.png                   # Retirement portal screenshot
-│   └── mobui.png                 # Mobile responsive view
-├── netlify.toml                  # Netlify deployment configuration
-├── deploy.sh                     # Smart contract deployment workflow
-└── package.json                  # Root workspace orchestration scripts
+│   │       ├── stellar.js        # Stellar helpers
+│   │       └── telemetry.js      # Telemetry logging helper
 ```
 
 ---
 
-## ⚙️ Setup & Installation
+## 🗺️ Roadmap
 
-### Prerequisites
-- **Rust** & **Cargo** (with target `wasm32-unknown-unknown`)
-- **Node.js v22+** & **npm**
-- **Stellar CLI** (for contract deployment)
-- **Freighter Wallet** browser extension (for live blockchain interactions)
+### ✅ Level 3 (Complete)
+- 5 Soroban smart contracts with Inter-Contract Communication.
+- Next.js frontend with Freighter wallet integration.
+- Real-time contract event logging dashboard.
 
-### 1. Clone the Repository
-```bash
-git clone https://github.com/praveengarakot/CarbonX.git
-cd CarbonX
-```
+### ✅ Level 4 (Complete)
+- Visual Telemetry & Diagnostics dashboard.
+- Clear transactional loading spinners and error alerts.
+- Vercel Analytics and Speed Insights tracking.
+- Floating Google Form feedback button.
+- 10+ real users onboarded with wallet proofs saved in Sheets.
+- Clean Git log under new author `barish245`.
 
-### 2. Smart Contract Setup
-```bash
-# Navigate to contracts folder
-cd contracts
+### 🔜 Level 5 (Planned)
+- On-chain verifier reputation system.
+- Advanced carbon project search and categorization filters.
+- Enterprise pitch deck for voluntary carbon credits markets.
+- Scale from 10 to 50 active users.
 
-# Build all WASM binaries
-cargo build --target wasm32-unknown-unknown --release
-
-# Run Rust unit and integration tests
-cargo test
-```
-
-### 3. Frontend Setup
-```bash
-# From the project root
-cd frontend
-
-# Install all dependencies
-npm install --legacy-peer-deps
-
-# Start local dev server (http://localhost:3000)
-npm run dev
-
-# Run frontend tests
-npm run test
-
-# Run linter
-npm run lint
-
-# Build production bundle
-npm run build
-```
+### 🔜 Level 6 (Planned)
+- Security audit of all 5 contracts.
+- Mainnet deployment.
+- Fee Sponsorship for gasless SME onboarding.
 
 ---
 
-## 🔄 CI/CD Pipeline
+## 👨💻 Author
 
-The project uses **GitHub Actions** (`.github/workflows/main.yml`) running on every push to `master`/`main`:
+**Praveen Garakot (barish245)** — [@barish245](https://github.com/barish245)
 
-```
-Push to master
-     │
-     ├── 🦀 Job 1: Build & Test Soroban Contracts
-     │         └── cargo test (all 5 contracts)
-     │
-     └── ⚛️ Job 2: Build & Test Frontend
-               ├── npm install --legacy-peer-deps (Node 22)
-               ├── npm run lint (ESLint + Next.js rules)
-               ├── npm run test (3 Vitest tests)
-               └── npm run build (Next.js production build)
-```
-
-### CI/CD Pipeline — GitHub Actions
-![CI/CD Pipeline](sub%20assets/cicd.png)
-
-### Frontend Test Results — Vitest
-![Test Results](sub%20assets/test.png)
-
----
-
-## 🌍 Deployment
-
-The frontend is deployed to **Netlify** using the configuration in `netlify.toml`:
-
-```toml
-[build]
-  base    = "frontend"
-  command = "npm run build"
-  publish = ".next"
-
-[[plugins]]
-  package = "@netlify/plugin-nextjs"
-```
-
-**Live URL**: [https://carbonx-stellar.netlify.app/](https://carbonx-stellar.netlify.app/)
-
----
-
-## 🛡️ Level 3 Requirements Checklist
-
-| Requirement | Status |
-|-------------|--------|
-| Advanced smart contract development (5 contracts) | ✅ |
-| Inter-contract communication | ✅ |
-| Event streaming & real-time updates | ✅ |
-| CI/CD pipeline setup (GitHub Actions) | ✅ |
-| Smart contract deployment workflow (`deploy.sh`) | ✅ |
-| Mobile responsive frontend | ✅ |
-| Error handling & loading states | ✅ |
-| Tests for contracts and frontend | ✅ |
-| Production-ready architecture | ✅ |
-| Documentation & demo presentation | ✅ |
-
----
-
-## 📝 Submission Details (Stellar Testnet)
-
-### Deployed Contract Addresses
-
-| Contract | Address |
-|----------|---------|
-| **Verification** | `CC7Q43DUGVPSKSXPOYT4TTSXTXEJAICL7N6LT5GB4ZN5UR3Y6T5VKVFQ` |
-| **Carbon Registry** | `CAV5ID4RDPAC5DOMOKRWH2YUORQHYRGJBWRTXG33RLBCKDMS333FA2MD` |
-| **Marketplace** | `CC4SBE33FC2AL3K77BQIJOFHO7RVDAKQFVTOLQARF6SHLOTIYV2MXYIY` |
-| **Settlement** | `CDXRNXG33D2MGTWX7VZJ3WO5ORHPOUTQN2WGQP6AJNJQUBD7TSUWXN5P` |
-| **Retirement** | `CCKX33TYO6FRCJV4BDOO73VVCKIOTF6DNZH6KPAWOXVBML7UGTK7V5JH` |
-
-- **Transaction Hash**: `0x1f0d36675fd2884a229a8f273be8a74e50d60c49`
-- **Live App**: [https://carbonx-stellar.netlify.app/](https://carbonx-stellar.netlify.app/)
-- **Demo Video**: [Google Drive](https://drive.google.com/file/d/1tI_jgWIF61P4U1DNgw2Ns23d2vVSuNb3/view?usp=sharing)
-- **User Feedback Form**: [Google Form](https://forms.gle/4PRxsnXBNGUrtvrB9)
-- **User Feedback Responses**: [Google Sheets Spreadsheet](https://docs.google.com/spreadsheets/d/1KexebLah9jnwBw1FSgdf25AH0dZRlAAfd98PtGuVFIE/edit?resourcekey=&gid=2100511142#gid=2100511142)
-
-
----
-
-## 🤝 Built For
-
-**RiseIn Stellar Soroban Bootcamp — Level 3 Final Project**
-
-*Solving the real-world problem of fragmented, opaque, and inaccessible carbon credit markets for SMEs — powered by the speed and low cost of the Stellar Network.*
+*Built for the RiseIn Stellar Bootcamp — Level 4 Black Belt*
