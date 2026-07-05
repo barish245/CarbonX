@@ -278,6 +278,9 @@ The frontend is deployed to **Netlify** using the configuration in `netlify.toml
 - **Transaction Hash**: `0x1f0d36675fd2884a229a8f273be8a74e50d60c49`
 - **Live App**: [https://carbonx-stellar.netlify.app/](https://carbonx-stellar.netlify.app/)
 - **Demo Video**: [Google Drive](https://drive.google.com/file/d/1tI_jgWIF61P4U1DNgw2Ns23d2vVSuNb3/view?usp=sharing)
+- **User Feedback Form**: [Google Form](https://forms.gle/4PRxsnXBNGUrtvrB9)
+- **User Feedback Responses**: [Google Sheets Spreadsheet](https://docs.google.com/spreadsheets/d/1KexebLah9jnwBw1FSgdf25AH0dZRlAAfd98PtGuVFIE/edit?resourcekey=&gid=2100511142#gid=2100511142)
+
 
 ---
 

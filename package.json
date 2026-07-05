@@ -8,5 +8,9 @@
     "start": "npm start --prefix frontend",
     "test": "npm test --prefix frontend",
     "contract:test": "cd contracts && cargo test"
+  },
+  "dependencies": {
+    "@vercel/analytics": "^2.0.1",
+    "@vercel/speed-insights": "^2.0.0"
   }
 }

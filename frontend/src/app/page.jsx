@@ -1187,7 +1187,7 @@ export default function Home() {
                 </div>
                 <div className="flex gap-3">
                   <a 
-                    href="https://forms.google.com"
+                    href="https://forms.gle/4PRxsnXBNGUrtvrB9"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="bg-emerald-500 text-white font-semibold text-xs px-4 py-2.5 rounded hover:bg-emerald-600 transition-colors flex items-center gap-2"
@@ -1356,7 +1356,7 @@ export default function Home() {
 
       {/* Floating feedback button */}
       <a
-        href="https://forms.google.com"
+        href="https://forms.gle/4PRxsnXBNGUrtvrB9"
         target="_blank"
         rel="noopener noreferrer"
         className="fixed bottom-6 right-6 bg-emerald-500 hover:bg-emerald-600 text-white font-semibold text-xs px-4 py-3 rounded-full shadow-2xl flex items-center gap-2 transition-all hover:scale-105 z-40"
