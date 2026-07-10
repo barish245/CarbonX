@@ -290,11 +290,11 @@ CarbonX/
 - 10+ real users onboarded with wallet proofs saved in Sheets.
 - Clean Git log under new author `barish245`.
 
-### 🔜 Level 5 (Planned)
+### ✅ Level 5 (Complete)
 - On-chain verifier reputation system.
 - Advanced carbon project search and categorization filters.
-- Enterprise pitch deck for voluntary carbon credits markets.
-- Scale from 10 to 50 active users.
+- Enterprise pitch deck for voluntary carbon credits markets. ([View Pitch Deck](https://docs.google.com/presentation/d/1IEHhdSCv6iwQDa31PfugXlHyF5VCWZ6QLS9cTX0TLXA/edit?usp=sharing))
+- Scaled up to 50 active users with improved onboarding flow.
 
 ### 🔜 Level 6 (Planned)
 - Security audit of all 5 contracts.
