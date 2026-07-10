@@ -1,4 +1,4 @@
-# 🌍 CarbonX
+#  CarbonX
 
 <div align="center">
 
@@ -10,13 +10,13 @@
 [![GitHub](https://img.shields.io/badge/Source_Code-barish245%2FCarbonX-181717?style=for-the-badge&logo=github)](https://github.com/barish245/CarbonX)
 [![Pitch Deck](https://img.shields.io/badge/Pitch_Deck-Google_Slides-F4B400?style=for-the-badge&logo=googledrive)](https://docs.google.com/presentation/d/1IEHhdSCv6iwQDa31PfugXlHyF5VCWZ6QLS9cTX0TLXA/edit?usp=sharing)
 [![Network](https://img.shields.io/badge/Network-Stellar_Testnet-00B4D8?style=for-the-badge&logo=stellar)](https://stellar.expert/explorer/testnet)
-[![Built for RiseIn](https://img.shields.io/badge/Built_for-RiseIn_Level_5-f59e0b?style=for-the-badge)](https://www.risein.com/)
+[![Built for RiseIn](https://img.shields.io/badge/Built_for-RiseIn-f59e0b?style=for-the-badge)](https://www.risein.com/)
 
 </div>
 
 ---
 
-## 📋 Table of Contents
+##  Table of Contents
 
 1. [Problem Statement](#-problem-statement)
 2. [Why Stellar?](#-why-stellar)
@@ -65,15 +65,16 @@ CarbonX is not a generic blockchain application. It is a protocol that specifica
 
 ---
 
-## 🌐 Live Deployment
+## Live Deployment
 
 | Resource | Link |
 |----------|------|
-| 🌍 **Live dApp** | [carbonx-stellar.netlify.app](https://carbonx-stellar.netlify.app/) |
-| 🎬 **Demo Video** | [Google Drive — Walkthrough Recording](https://drive.google.com/file/d/1tI_jgWIF61P4U1DNgw2Ns23d2vVSuNb3/view?usp=sharing) |
-| 💻 **GitHub Repo** | [barish245/CarbonX](https://github.com/barish245/CarbonX) |
-| 📋 **User Feedback Form** | [CarbonX Feedback — Google Forms](https://forms.gle/4PRxsnXBNGUrtvrB9) |
-| 📊 **Onboarded Users & Wallet Responses** | [Responses Spreadsheet — Google Sheets](https://docs.google.com/spreadsheets/d/1KexebLah9jnwBw1FSgdf25AH0dZRlAAfd98PtGuVFIE/edit?resourcekey=&gid=2100511142#gid=2100511142) |
+| **Live dApp** | [carbonx-stellar.netlify.app](https://carbonx-stellar.netlify.app/) |
+| **Demo Video** | [Walkthrough Recording](https://drive.google.com/file/d/1tI_jgWIF61P4U1DNgw2Ns23d2vVSuNb3/view?usp=sharing) |
+| **Pitch Deck** | [Pitch Deck](https://docs.google.com/presentation/d/1IEHhdSCv6iwQDa31PfugXlHyF5VCWZ6QLS9cTX0TLXA/edit?usp=sharing) |
+| **GitHub Repo** | [CarbonX](https://github.com/barish245/CarbonX) |
+| **User Feedback Form** | [Feedback](https://forms.gle/4PRxsnXBNGUrtvrB9) |
+| **Onboarded Users** | [Responses](https://docs.google.com/spreadsheets/d/1KexebLah9jnwBw1FSgdf25AH0dZRlAAfd98PtGuVFIE/edit?resourcekey=&gid=2100511142#gid=2100511142) |
 
 ---
 
@@ -113,12 +114,12 @@ As part of the Level 4 production MVP requirements, we onboarded real users to v
 
 | Resource | Link |
 |----------|------|
-| 📋 **Feedback Form** | [Submit Feedback](https://forms.gle/4PRxsnXBNGUrtvrB9) |
-| 📊 **User Responses & Wallet Proof** | [View Spreadsheet](https://docs.google.com/spreadsheets/d/1KexebLah9jnwBw1FSgdf25AH0dZRlAAfd98PtGuVFIE/edit?resourcekey=&gid=2100511142#gid=2100511142) |
+|  **Feedback Form** | [Submit Feedback](https://forms.gle/4PRxsnXBNGUrtvrB9) |
+|  **User Responses & Wallet Proof** | [View Spreadsheet](https://docs.google.com/spreadsheets/d/1KexebLah9jnwBw1FSgdf25AH0dZRlAAfd98PtGuVFIE/edit?resourcekey=&gid=2100511142#gid=2100511142) |
 
 ---
 
-## 🏗️ Architecture
+##  Architecture
 
 CarbonX is composed of 5 Soroban smart contracts that communicate via Inter-Contract Calls (ICC), and a Next.js frontend that builds and submits signed Stellar transactions.
 
@@ -149,38 +150,38 @@ CarbonX is composed of 5 Soroban smart contracts that communicate via Inter-Cont
 ### Inter-Contract Communication (ICC) Flow
 
 The ICC design is the architectural centerpiece of CarbonX. All registry state changes are triggered atomically:
-1. **Verification ➡️ Registry**: When the verifier approves a project, the Verification Contract uses ICC to mint credits to the developer.
-2. **Marketplace ➡️ Settlement & Registry**: When a buyer purchases a listing, the Marketplace contract locks/settles XLM via the Settlement Contract and transfers the registry token ownership via the Registry contract.
-3. **Retirement ➡️ Registry**: When a user retires credits, the Retirement Contract marks them retired in the Registry and issues a certificate.
+1. **Verification  Registry**: When the verifier approves a project, the Verification Contract uses ICC to mint credits to the developer.
+2. **Marketplace  Settlement & Registry**: When a buyer purchases a listing, the Marketplace contract locks/settles XLM via the Settlement Contract and transfers the registry token ownership via the Registry contract.
+3. **Retirement  Registry**: When a user retires credits, the Retirement Contract marks them retired in the Registry and issues a certificate.
 
 ---
 
-## 📜 Smart Contracts
+##  Smart Contracts
 
-### 1. 🔍 Verification Contract (`verification-contract`)
+### 1.  Verification Contract (`verification-contract`)
 - Registers authorized verifiers.
 - Submits carbon reduction projects.
 - Calls `CarbonRegistry` to mint credits upon verification.
 
-### 2. 📋 Carbon Registry (`carbon-registry`)
+### 2.  Carbon Registry (`carbon-registry`)
 - Tracks total supply, individual credit ownership balances, and retirement states.
 - Restricts minting to the Verification Contract only.
 
-### 3. 🏪 Marketplace Contract (`marketplace-contract`)
+### 3.  Marketplace Contract (`marketplace-contract`)
 - Holds listed credits in contract-managed escrow.
 - Facilitates buy and listing cancel transactions.
 
-### 4. 💸 Settlement Contract (`settlement-contract`)
+### 4.  Settlement Contract (`settlement-contract`)
 - Emits lock and release payment events.
 - Handles payments between buyers and sellers.
 
-### 5. 🏆 Retirement Contract (`retirement-contract`)
+### 5.  Retirement Contract (`retirement-contract`)
 - Permanently retires credits via the Registry.
 - Updates the buyer's Carbon Score and issues certificates.
 
 ---
 
-## 🛡️ Production Hardening (Level 4)
+##  Production Hardening (Level 4)
 
 The following security audits and production improvements were implemented and tested in Level 4:
 
@@ -202,30 +203,30 @@ The following security audits and production improvements were implemented and t
 
 ---
 
-## 📸 Submission Screenshots
+##  Submission Screenshots
 
-### 🖥️ Carbon Marketplace UI
+###  Carbon Marketplace UI
 ![Marketplace](sub%20assets/ui2.png)
 
-### 📱 Diagnostics & Telemetry Dashboard
+###  Diagnostics & Telemetry Dashboard
 ![Diagnostics](sub%20assets/ui1.png)
 
-### 📈 Vercel Web Analytics
+###  Vercel Web Analytics
 ![Vercel Analytics](sub%20assets/analytics.png)
 
-### 🔄 CI/CD Pipeline
+###  CI/CD Pipeline
 ![CI/CD Pipeline](sub%20assets/cicd.png)
 
 ---
 
-## 🧪 Testing
+##  Testing
 
 ### Test Summary
 
 | Suite | Tests | Status |
 |-------|-------|--------|
-| Frontend (Vitest) | 3 tests | ✅ All Passing |
-| Rust Contracts | 1 test (Full Flow) | ✅ All Passing |
+| Frontend (Vitest) | 3 tests |  All Passing |
+| Rust Contracts | 1 test (Full Flow) |  All Passing |
 
 ```bash
 # Run contract tests
@@ -237,7 +238,7 @@ cd frontend && npm test
 
 ---
 
-## 🛠️ Tech Stack
+##  Tech Stack
 
 | Layer | Technology | Purpose |
 |-------|-----------|---------|
@@ -250,7 +251,7 @@ cd frontend && npm test
 
 ---
 
-## 📁 Project Structure
+##  Project Structure
 
 ```
 CarbonX/
@@ -276,14 +277,14 @@ CarbonX/
 
 ---
 
-## 🗺️ Roadmap
+##  Roadmap
 
-### ✅ Level 3 (Complete)
+###  Level 3 (Complete)
 - 5 Soroban smart contracts with Inter-Contract Communication.
 - Next.js frontend with Freighter wallet integration.
 - Real-time contract event logging dashboard.
 
-### ✅ Level 4 (Complete)
+###  Level 4 (Complete)
 - Visual Telemetry & Diagnostics dashboard.
 - Clear transactional loading spinners and error alerts.
 - Vercel Analytics and Speed Insights tracking.
@@ -291,20 +292,20 @@ CarbonX/
 - 10+ real users onboarded with wallet proofs saved in Sheets.
 - Clean Git log under new author `barish245`.
 
-### ✅ Level 5 (Complete)
+###  Level 5 (Complete)
 - On-chain verifier reputation system.
 - Advanced carbon project search and categorization filters.
-- Enterprise pitch deck for voluntary carbon credits markets. ([View Pitch Deck](https://docs.google.com/presentation/d/1IEHhdSCv6iwQDa31PfugXlHyF5VCWZ6QLS9cTX0TLXA/edit?usp=sharing))
+- Enterprise pitch deck for voluntary carbon credits markets.
 - Scaled up to 50 active users with improved onboarding flow.
 
-### 🔜 Level 6 (Planned)
+###  Level 6 (Planned)
 - Security audit of all 5 contracts.
 - Mainnet deployment.
 - Fee Sponsorship for gasless SME onboarding.
 
 ---
 
-## 👨💻 Author
+## 👨 Author
 
 **Praveen Garakot (barish245)** — [@barish245](https://github.com/barish245)
 
