@@ -8,8 +8,9 @@
 
 [![Live Demo](https://img.shields.io/badge/Live_Demo-carbonx--stellar.netlify.app-16a34a?style=for-the-badge&logo=netlify)](https://carbonx-stellar.netlify.app/)
 [![GitHub](https://img.shields.io/badge/Source_Code-barish245%2FCarbonX-181717?style=for-the-badge&logo=github)](https://github.com/barish245/CarbonX)
+[![Pitch Deck](https://img.shields.io/badge/Pitch_Deck-Google_Slides-F4B400?style=for-the-badge&logo=googledrive)](https://docs.google.com/presentation/d/1IEHhdSCv6iwQDa31PfugXlHyF5VCWZ6QLS9cTX0TLXA/edit?usp=sharing)
 [![Network](https://img.shields.io/badge/Network-Stellar_Testnet-00B4D8?style=for-the-badge&logo=stellar)](https://stellar.expert/explorer/testnet)
-[![Built for RiseIn](https://img.shields.io/badge/Built_for-RiseIn_Level_4-f59e0b?style=for-the-badge)](https://www.risein.com/)
+[![Built for RiseIn](https://img.shields.io/badge/Built_for-RiseIn_Level_5-f59e0b?style=for-the-badge)](https://www.risein.com/)
 
 </div>
 
@@ -307,4 +308,4 @@ CarbonX/
 
 **Praveen Garakot (barish245)** — [@barish245](https://github.com/barish245)
 
-*Built for the RiseIn Stellar Bootcamp — Level 4 Black Belt*
+*Built for the RiseIn Stellar Bootcamp — Level 5 Blue Belt*
