@@ -63,20 +63,29 @@ export default function Home() {
 
   // State Management (Simulating the 5-contract Soroban state)
   const [projects, setProjects] = useState([
-    { id: 1, name: "Solar Plant Kolkata", developer: "GBDEVELOPERACME2R3M6R6PQA5VGD77B5XG2V6B5Y2B", amount: 120, unit: "tCO2e", verified: true, verifier: "GBVERIFIERSTELLARVERIFY4R5T7Y8U9I0O1P2Q3W4B" },
-    { id: 2, name: "Kariba Forest Protection", developer: "GBDEVELOPERACME2R3M6R6PQA5VGD77B5XG2V6B5Y2B", amount: 250, unit: "tCO2e", verified: false, verifier: null },
-    { id: 3, name: "Guanaré Plantations", developer: "GBDEVELOPERACME2R3M6R6PQA5VGD77B5XG2V6B5Y2B", amount: 300, unit: "tCO2e", verified: false, verifier: null },
+    { id: 1, name: "Solar Plant Kolkata", category: "Renewable Energy", developer: "GBDEVELOPERACME2R3M6R6PQA5VGD77B5XG2V6B5Y2B", amount: 120, unit: "tCO2e", verified: true, verifier: "GBVERIFIERSTELLARVERIFY4R5T7Y8U9I0O1P2Q3W4B" },
+    { id: 2, name: "Kariba Forest Protection", category: "Forestry", developer: "GBDEVELOPERACME2R3M6R6PQA5VGD77B5XG2V6B5Y2B", amount: 250, unit: "tCO2e", verified: false, verifier: null },
+    { id: 3, name: "Guanaré Plantations", category: "Forestry", developer: "GBDEVELOPERACME2R3M6R6PQA5VGD77B5XG2V6B5Y2B", amount: 300, unit: "tCO2e", verified: false, verifier: null },
   ]);
 
   const [credits, setCredits] = useState([
-    { id: 101, project: "Solar Plant Kolkata", project_id: 1, owner: "GBDEVELOPERACME2R3M6R6PQA5VGD77B5XG2V6B5Y2B", amount: 120, retired: false },
+    { id: 101, project: "Solar Plant Kolkata", category: "Renewable Energy", project_id: 1, owner: "GBDEVELOPERACME2R3M6R6PQA5VGD77B5XG2V6B5Y2B", amount: 120, retired: false },
   ]);
 
   const [listings, setListings] = useState([
-    { id: 501, credit_id: 101, project: "Solar Plant Kolkata", amount: 120, price: 50, seller: "GBDEVELOPERACME2R3M6R6PQA5VGD77B5XG2V6B5Y2B", active: true },
+    { id: 501, credit_id: 101, project: "Solar Plant Kolkata", category: "Renewable Energy", amount: 120, price: 50, seller: "GBDEVELOPERACME2R3M6R6PQA5VGD77B5XG2V6B5Y2B", active: true },
   ]);
 
   const [retiredCredits, setRetiredCredits] = useState([]);
+  
+  const [verifierReputation, setVerifierReputation] = useState({
+    "GBVERIFIERSTELLARVERIFY4R5T7Y8U9I0O1P2Q3W4B": 1
+  });
+
+  const [showWelcomeModal, setShowWelcomeModal] = useState(true);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [newProjCategory, setNewProjCategory] = useState("Renewable Energy");
   
   const [activityFeed, setActivityFeed] = useState([
     { id: 1, text: "Verification Contract Initialized on Stellar Testnet", type: "system", timestamp: "Just now" },
@@ -256,6 +265,7 @@ export default function Home() {
       const newProj = {
         id: projects.length + 1,
         name: newProjName,
+        category: newProjCategory,
         developer: developerAddress,
         amount: amt,
         unit: "tCO2e",
@@ -305,6 +315,7 @@ export default function Home() {
             const newCredit = {
               id: newId,
               project: item.name,
+              category: item.category,
               project_id: item.id,
               owner: item.developer,
               amount: item.amount,
@@ -312,6 +323,11 @@ export default function Home() {
             };
             return [...c, newCredit];
           });
+          
+          setVerifierReputation(prev => ({
+            ...prev,
+            [verifierAddress]: (prev[verifierAddress] || 0) + 1
+          }));
           
           addActivity(`[Stellar TX: ${tx.txHash.slice(0, 10)}...] operation verify_project completed`, "system");
           addActivity(`✓ CarbonVerified: Project #${item.id} approved by Verifier`, "verified");
@@ -352,6 +368,7 @@ export default function Home() {
         id: listings.length + 501,
         credit_id: credit.id,
         project: credit.project,
+        category: credit.category,
         amount: credit.amount,
         price: priceVal,
         seller: sellerAddress,
@@ -521,6 +538,47 @@ export default function Home() {
   return (
     <div className="flex h-screen w-full bg-[#131313] text-[#e5e2e1] overflow-hidden font-sans">
       
+      {/* Welcome Modal */}
+      {showWelcomeModal && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm">
+          <div className="bg-[#111111] border border-[#262626] rounded-xl p-8 max-w-md w-full relative animate-fade-in shadow-2xl">
+            <h2 className="text-2xl font-bold text-white mb-2">Welcome to CarbonX</h2>
+            <p className="text-[#8e9192] text-sm mb-6">
+              You are entering a decentralized carbon credit marketplace. Choose a sandbox role or connect your wallet to interact with Soroban smart contracts.
+            </p>
+            <div className="space-y-4 mb-8">
+              <div className="flex items-start gap-3 p-3 rounded-lg bg-[#1c1b1b] border border-[#262626]">
+                <span className="material-symbols-outlined text-white text-xl mt-0.5">factory</span>
+                <div>
+                  <div className="text-white text-sm font-semibold">Developer</div>
+                  <div className="text-xs text-[#8e9192]">Submit projects and mint credits.</div>
+                </div>
+              </div>
+              <div className="flex items-start gap-3 p-3 rounded-lg bg-[#1c1b1b] border border-[#262626]">
+                <span className="material-symbols-outlined text-white text-xl mt-0.5">verified</span>
+                <div>
+                  <div className="text-white text-sm font-semibold">Verifier</div>
+                  <div className="text-xs text-[#8e9192]">Audit projects and build reputation.</div>
+                </div>
+              </div>
+              <div className="flex items-start gap-3 p-3 rounded-lg bg-[#1c1b1b] border border-[#262626]">
+                <span className="material-symbols-outlined text-white text-xl mt-0.5">shopping_cart</span>
+                <div>
+                  <div className="text-white text-sm font-semibold">Buyer</div>
+                  <div className="text-xs text-[#8e9192]">Purchase and retire credits for ESG goals.</div>
+                </div>
+              </div>
+            </div>
+            <button 
+              onClick={() => setShowWelcomeModal(false)}
+              className="w-full bg-white text-black font-semibold py-3 rounded-lg hover:bg-zinc-200 transition-colors uppercase tracking-widest text-sm"
+            >
+              Get Started
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* SideNavBar Component */}
       <aside className="w-64 border-r border-[#262626] bg-[#0e0e0e] flex flex-col h-full z-20 flex-shrink-0">
         <div className="px-6 py-8 border-b border-[#262626]">
@@ -871,8 +929,32 @@ export default function Home() {
 
               {/* List of active listings */}
               <div className="bg-[#111111] border border-[#262626] rounded-xl overflow-hidden">
-                <div className="p-6 border-b border-[#262626]">
+                <div className="p-6 border-b border-[#262626] flex flex-col md:flex-row md:items-center justify-between gap-4">
                   <h3 className="text-lg font-semibold text-white">Open Listings</h3>
+                  
+                  {/* Filters */}
+                  <div className="flex items-center gap-3">
+                    <div className="relative">
+                      <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[#8e9192] text-sm">search</span>
+                      <input 
+                        type="text" 
+                        placeholder="Search projects..." 
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        className="bg-[#131313] border border-[#262626] rounded-lg pl-9 pr-4 py-2 text-xs text-white focus:outline-none focus:border-zinc-500 w-48"
+                      />
+                    </div>
+                    <select 
+                      value={selectedCategory}
+                      onChange={(e) => setSelectedCategory(e.target.value)}
+                      className="bg-[#131313] border border-[#262626] rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-zinc-500"
+                    >
+                      <option value="All">All Categories</option>
+                      <option value="Renewable Energy">Renewable Energy</option>
+                      <option value="Forestry">Forestry</option>
+                      <option value="Other">Other</option>
+                    </select>
+                  </div>
                 </div>
 
                 <div className="overflow-x-auto">
@@ -888,7 +970,10 @@ export default function Home() {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-[#262626]">
-                      {listings.filter(l => l.active).map((listing) => (
+                      {listings.filter(l => l.active && 
+                        (selectedCategory === "All" || l.category === selectedCategory) &&
+                        l.project.toLowerCase().includes(searchQuery.toLowerCase())
+                      ).map((listing) => (
                         <tr key={listing.id} className="hover:bg-white/5 transition-colors">
                           <td className="p-4 font-mono">#{listing.id}</td>
                           <td className="p-4 font-semibold text-white">{listing.project}</td>
@@ -991,6 +1076,19 @@ export default function Home() {
                     </div>
 
                     <div>
+                      <label className="block text-xs uppercase tracking-wider text-[#8e9192] mb-2">Category</label>
+                      <select 
+                        value={newProjCategory}
+                        onChange={(e) => setNewProjCategory(e.target.value)}
+                        className="w-full bg-[#131313] border border-[#262626] rounded p-3 text-xs text-white focus:border-white focus:outline-none"
+                      >
+                        <option value="Renewable Energy">Renewable Energy</option>
+                        <option value="Forestry">Forestry</option>
+                        <option value="Other">Other</option>
+                      </select>
+                    </div>
+
+                    <div>
                       <label className="block text-xs uppercase tracking-wider text-[#8e9192] mb-2">Estimated Offset Amount (tCO2e)</label>
                       <input 
                         type="number" 
@@ -1025,9 +1123,14 @@ export default function Home() {
                         </div>
 
                         {project.verified ? (
-                          <div className="flex items-center gap-1.5 text-xs text-[#8e9192]">
-                            <span className="material-symbols-outlined text-[16px] text-zinc-400">check_circle</span>
-                            <span>Verified</span>
+                          <div className="flex flex-col items-end gap-1">
+                            <div className="flex items-center gap-1.5 text-xs text-[#8e9192]">
+                              <span className="material-symbols-outlined text-[16px] text-zinc-400">check_circle</span>
+                              <span>Verified</span>
+                            </div>
+                            <div className="text-[10px] text-zinc-500 font-mono">
+                              Reputation Score: {verifierReputation[project.verifier] || 0}
+                            </div>
                           </div>
                         ) : (
                           <div>

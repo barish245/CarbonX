@@ -68,6 +68,11 @@ impl VerificationContract {
         project.verifier = Some(verifier.clone());
         env.storage().instance().set(&project_id, &project);
 
+        let rep_key = (symbol_short!("rep"), verifier.clone());
+        let mut rep: u32 = env.storage().instance().get(&rep_key).unwrap_or(0);
+        rep += 1;
+        env.storage().instance().set(&rep_key, &rep);
+
         env.events().publish(
             (symbol_short!("verified"), project_id),
             (project.developer.clone(), project.amount),
@@ -79,6 +84,11 @@ impl VerificationContract {
 
     pub fn get_project(env: Env, project_id: u64) -> Project {
         env.storage().instance().get(&project_id).expect("project not found")
+    }
+
+    pub fn get_verifier_reputation(env: Env, verifier: Address) -> u32 {
+        let rep_key = (symbol_short!("rep"), verifier);
+        env.storage().instance().get(&rep_key).unwrap_or(0)
     }
 }
 
