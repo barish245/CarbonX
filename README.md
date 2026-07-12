@@ -305,8 +305,4 @@ CarbonX/
 
 ---
 
-## 👨 Author
-
-**Praveen Garakot (barish245)** — [@barish245](https://github.com/barish245)
-
 *Built for the RiseIn Stellar Bootcamp — Level 5 Blue Belt*
