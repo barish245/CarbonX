@@ -8,7 +8,7 @@
 
 [![Live Demo](https://img.shields.io/badge/Live_Demo-carbonx--stellar.netlify.app-16a34a?style=for-the-badge&logo=netlify)](https://carbonx-stellar.netlify.app/)
 [![GitHub](https://img.shields.io/badge/Source_Code-barish245%2FCarbonX-181717?style=for-the-badge&logo=github)](https://github.com/barish245/CarbonX)
-[![Pitch Deck](https://img.shields.io/badge/Pitch_Deck-Google_Slides-F4B400?style=for-the-badge&logo=googledrive)](https://docs.google.com/presentation/d/1IEHhdSCv6iwQDa31PfugXlHyF5VCWZ6QLS9cTX0TLXA/edit?usp=sharing)
+[![Pitch Deck](https://img.shields.io/badge/Pitch_Deck-Google_Slides-F4B400?style=for-the-badge&logo=googledriv)](https://drive.google.com/file/d/1tPu-Lpw5hQ8gQ13o1SZwQaQPMDTyyBZx/view?usp=sharing)
 [![Network](https://img.shields.io/badge/Network-Stellar_Testnet-00B4D8?style=for-the-badge&logo=stellar)](https://stellar.expert/explorer/testnet)
 [![Built for RiseIn](https://img.shields.io/badge/Built_for-RiseIn-f59e0b?style=for-the-badge)](https://www.risein.com/)
 
@@ -71,10 +71,10 @@ CarbonX is not a generic blockchain application. It is a protocol that specifica
 |----------|------|
 | **Live dApp** | [carbonx-stellar.netlify.app](https://carbonx-stellar.netlify.app/) |
 | **Demo Video** | [Walkthrough Recording](https://drive.google.com/file/d/1tI_jgWIF61P4U1DNgw2Ns23d2vVSuNb3/view?usp=sharing) |
-| **Pitch Deck** | [Pitch Deck](https://docs.google.com/presentation/d/1IEHhdSCv6iwQDa31PfugXlHyF5VCWZ6QLS9cTX0TLXA/edit?usp=sharing) |
+| **Pitch Deck** | [Pitch Deck](https://drive.google.com/file/d/1tPu-Lpw5hQ8gQ13o1SZwQaQPMDTyyBZx/view?usp=sharing) |
 | **GitHub Repo** | [CarbonX](https://github.com/barish245/CarbonX) |
-| **User Feedback Form** | [Feedback](https://forms.gle/4PRxsnXBNGUrtvrB9) |
-| **Onboarded Users** | [Responses](https://docs.google.com/spreadsheets/d/1KexebLah9jnwBw1FSgdf25AH0dZRlAAfd98PtGuVFIE/edit?resourcekey=&gid=2100511142#gid=2100511142) |
+| **User Feedback Form** | [Feedback](https://forms.gle/HR7znhm4xN4gm18s8) |
+| **Onboarded Users** | [Responses](https://docs.google.com/spreadsheets/d/1PLX-Zktm0imd9iAYb_O5b1kH430WVWbq1Rbqx0htHcQ/edit?usp=sharing) |
 
 ---
 
@@ -114,8 +114,8 @@ As part of the Level 4 production MVP requirements, we onboarded real users to v
 
 | Resource | Link |
 |----------|------|
-|  **Feedback Form** | [Submit Feedback](https://forms.gle/4PRxsnXBNGUrtvrB9) |
-|  **User Responses & Wallet Proof** | [View Spreadsheet](https://docs.google.com/spreadsheets/d/1KexebLah9jnwBw1FSgdf25AH0dZRlAAfd98PtGuVFIE/edit?resourcekey=&gid=2100511142#gid=2100511142) |
+|  **Feedback Form** | [Submit Feedback](https://forms.gle/HR7znhm4xN4gm18s8) |
+|  **User Responses & Wallet Proof** | [View Spreadsheet](https://docs.google.com/spreadsheets/d/1PLX-Zktm0imd9iAYb_O5b1kH430WVWbq1Rbqx0htHcQ/edit?usp=sharing) |
 
 ---
 
