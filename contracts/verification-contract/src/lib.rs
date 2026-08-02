@@ -1,5 +1,5 @@
 #![no_std]
-use soroban_sdk::{contract, contractimpl, contracttype, symbol_short, Address, Env, Symbol, IntoVal, Val};
+use soroban_sdk::{contract, contractimpl, contracttype, symbol_short, Address, Env, Symbol, IntoVal};
 
 #[contracttype]
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -24,10 +24,26 @@ impl VerificationContract {
         env.storage().instance().set(&symbol_short!("admin"), &admin);
     }
     
+    pub fn get_admin(env: Env) -> Address {
+        env.storage().instance().get(&symbol_short!("admin")).expect("not initialized")
+    }
+
+    pub fn set_admin(env: Env, new_admin: Address) {
+        let admin: Address = env.storage().instance().get(&symbol_short!("admin")).expect("not initialized");
+        admin.require_auth();
+        env.storage().instance().set(&symbol_short!("admin"), &new_admin);
+    }
+
     pub fn add_verifier(env: Env, verifier: Address) {
         let admin: Address = env.storage().instance().get(&symbol_short!("admin")).unwrap();
         admin.require_auth();
         env.storage().instance().set(&verifier, &true);
+    }
+
+    pub fn remove_verifier(env: Env, verifier: Address) {
+        let admin: Address = env.storage().instance().get(&symbol_short!("admin")).expect("not initialized");
+        admin.require_auth();
+        env.storage().instance().set(&verifier, &false);
     }
     
     pub fn is_verifier(env: Env, address: Address) -> bool {
@@ -36,6 +52,9 @@ impl VerificationContract {
 
     pub fn submit_project(env: Env, developer: Address, description: Symbol, amount: u128) -> u64 {
         developer.require_auth();
+        if amount == 0 {
+            panic!("amount must be greater than zero");
+        }
         let mut count: u64 = env.storage().instance().get(&symbol_short!("count")).unwrap_or(0);
         count += 1;
         env.storage().instance().set(&symbol_short!("count"), &count);
@@ -82,8 +101,22 @@ impl VerificationContract {
         client.mint(&project.developer, &project.amount, &project_id);
     }
 
+    pub fn penalize_verifier(env: Env, verifier: Address, penalty: u32) -> u32 {
+        let admin: Address = env.storage().instance().get(&symbol_short!("admin")).expect("not initialized");
+        admin.require_auth();
+        let rep_key = (symbol_short!("rep"), verifier.clone());
+        let rep: u32 = env.storage().instance().get(&rep_key).unwrap_or(0);
+        let new_rep = if rep > penalty { rep - penalty } else { 0 };
+        env.storage().instance().set(&rep_key, &new_rep);
+        new_rep
+    }
+
     pub fn get_project(env: Env, project_id: u64) -> Project {
         env.storage().instance().get(&project_id).expect("project not found")
+    }
+
+    pub fn get_project_count(env: Env) -> u64 {
+        env.storage().instance().get(&symbol_short!("count")).unwrap_or(0)
     }
 
     pub fn get_verifier_reputation(env: Env, verifier: Address) -> u32 {
@@ -109,9 +142,7 @@ impl<'a> RegistryClient<'a> {
             soroban_sdk::vec![self.env, recipient.clone().into_val(self.env), amount.clone().into_val(self.env), project_id.clone().into_val(self.env)],
         );
     }
-
 }
 
 #[cfg(test)]
 mod test;
-
