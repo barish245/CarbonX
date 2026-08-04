@@ -1,5 +1,5 @@
 #![no_std]
-use soroban_sdk::{contract, contractimpl, contracttype, symbol_short, Address, Env, Symbol, IntoVal};
+use soroban_sdk::{contract, contractimpl, contracttype, symbol_short, Address, Env, Vec};
 
 #[contracttype]
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -27,6 +27,10 @@ impl CarbonRegistry {
         let verifier: Address = env.storage().instance().get(&symbol_short!("verifier")).expect("not initialized");
         verifier.require_auth();
 
+        if amount == 0 {
+            panic!("amount must be greater than zero");
+        }
+
         let mut credit_count: u64 = env.storage().instance().get(&symbol_short!("count")).unwrap_or(0);
         credit_count += 1;
         env.storage().instance().set(&symbol_short!("count"), &credit_count);
@@ -45,6 +49,10 @@ impl CarbonRegistry {
         let mut balance: u128 = env.storage().instance().get(&key_balance).unwrap_or(0);
         balance += amount;
         env.storage().instance().set(&key_balance, &balance);
+
+        let mut total_minted: u128 = env.storage().instance().get(&symbol_short!("tot_mint")).unwrap_or(0);
+        total_minted += amount;
+        env.storage().instance().set(&symbol_short!("tot_mint"), &total_minted);
 
         let key_owner = (symbol_short!("owner"), credit_count);
         env.storage().instance().set(&key_owner, &recipient);
@@ -66,6 +74,18 @@ impl CarbonRegistry {
         env.storage().instance().get(&credit_id).expect("credit does not exist")
     }
 
+    pub fn get_credit_count(env: Env) -> u64 {
+        env.storage().instance().get(&symbol_short!("count")).unwrap_or(0)
+    }
+
+    pub fn get_total_minted(env: Env) -> u128 {
+        env.storage().instance().get(&symbol_short!("tot_mint")).unwrap_or(0)
+    }
+
+    pub fn get_total_retired(env: Env) -> u128 {
+        env.storage().instance().get(&symbol_short!("tot_ret")).unwrap_or(0)
+    }
+
     pub fn get_balance(env: Env, address: Address) -> u128 {
         let key_balance = (symbol_short!("balance"), address);
         env.storage().instance().get(&key_balance).unwrap_or(0)
@@ -84,7 +104,7 @@ impl CarbonRegistry {
             panic!("not the owner of the credit");
         }
 
-        let mut credit: Credit = env.storage().instance().get(&credit_id).unwrap();
+        let credit: Credit = env.storage().instance().get(&credit_id).unwrap();
         if credit.retired {
             panic!("cannot transfer retired credit");
         }
@@ -108,6 +128,42 @@ impl CarbonRegistry {
             (symbol_short!("transfer"), credit_id),
             (from, to),
         );
+    }
+
+    pub fn batch_transfer(env: Env, from: Address, to: Address, credit_ids: Vec<u64>) {
+        from.require_auth();
+        for credit_id in credit_ids.iter() {
+            let key_owner = (symbol_short!("owner"), credit_id);
+            let current_owner: Address = env.storage().instance().get(&key_owner).expect("credit does not exist");
+            if current_owner != from {
+                panic!("not the owner of the credit");
+            }
+
+            let credit: Credit = env.storage().instance().get(&credit_id).unwrap();
+            if credit.retired {
+                panic!("cannot transfer retired credit");
+            }
+
+            env.storage().instance().set(&key_owner, &to);
+
+            let key_balance_from = (symbol_short!("balance"), from.clone());
+            let mut balance_from: u128 = env.storage().instance().get(&key_balance_from).unwrap_or(0);
+            if balance_from < credit.amount {
+                panic!("insufficient balance");
+            }
+            balance_from -= credit.amount;
+            env.storage().instance().set(&key_balance_from, &balance_from);
+
+            let key_balance_to = (symbol_short!("balance"), to.clone());
+            let mut balance_to: u128 = env.storage().instance().get(&key_balance_to).unwrap_or(0);
+            balance_to += credit.amount;
+            env.storage().instance().set(&key_balance_to, &balance_to);
+
+            env.events().publish(
+                (symbol_short!("transfer"), credit_id),
+                (from.clone(), to.clone()),
+            );
+        }
     }
 
     pub fn retire(env: Env, owner: Address, credit_id: u64) {
@@ -138,6 +194,10 @@ impl CarbonRegistry {
         let mut retired_balance: u128 = env.storage().instance().get(&key_retired).unwrap_or(0);
         retired_balance += credit.amount;
         env.storage().instance().set(&key_retired, &retired_balance);
+
+        let mut total_retired: u128 = env.storage().instance().get(&symbol_short!("tot_ret")).unwrap_or(0);
+        total_retired += credit.amount;
+        env.storage().instance().set(&symbol_short!("tot_ret"), &total_retired);
 
         env.events().publish(
             (symbol_short!("retired"), credit_id),
