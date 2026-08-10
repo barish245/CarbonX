@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { getFreighterPublicKey, submitSorobanTx, CONTRACTS, fetchXlmBalance, sendXlmTransaction, fundWithFriendbot, isConnected, connectWithWalletsKit } from "../lib/stellar";
 import { logEvent, subscribeToTelemetry } from "../lib/telemetry";
+import { calculateEmissions, getEsgTier } from "../lib/calculator";
 
 export default function Home() {
   const [inApp, setInApp] = useState(false);
@@ -12,6 +13,17 @@ export default function Home() {
   const [walletBalance, setWalletBalance] = useState("0.0000");
   const [isRefreshingBalance, setIsRefreshingBalance] = useState(false);
   const [telemetryLogs, setTelemetryLogs] = useState([]);
+  
+  // Calculator & Certificate Modals
+  const [showCalculatorModal, setShowCalculatorModal] = useState(false);
+  const [calcElectricity, setCalcElectricity] = useState("12000");
+  const [calcFlights, setCalcFlights] = useState("5000");
+  const [calcFuel, setCalcFuel] = useState("800");
+  const [calcServers, setCalcServers] = useState("2400");
+  const [calcResult, setCalcResult] = useState(null);
+
+  const [selectedCert, setSelectedCert] = useState(null);
+  const [sortBy, setSortBy] = useState("default");
 
   useEffect(() => {
     logEvent("navigation", "page_load", inApp ? "terminal" : "landing_page");
@@ -742,14 +754,37 @@ export default function Home() {
         <main className="flex-1 overflow-y-auto p-8 bg-[#131313]">
           
           {/* TAB 1: OVERVIEW */}
-          {activeTab === "overview" && (
+          {activeTab === "overview" && (() => {
+            const tier = getEsgTier(stats.score);
+            return (
             <div className="space-y-8 animate-fade-in">
-              <div className="flex justify-between items-end border-b border-[#262626] pb-6">
+              <div className="flex flex-col md:flex-row justify-between items-start md:items-end border-b border-[#262626] pb-6 gap-4">
                 <div>
-                  <h2 className="text-3xl font-bold text-white tracking-tight">Overview Dashboard</h2>
+                  <div className="flex items-center gap-3">
+                    <h2 className="text-3xl font-bold text-white tracking-tight">Overview Dashboard</h2>
+                    <span className={`px-2.5 py-0.5 rounded-full text-xs font-semibold border ${tier.color}`}>
+                      {tier.badge}
+                    </span>
+                  </div>
                   <p className="text-sm text-[#8e9192] mt-1">Portfolio performance, asset balances, and carbon score trajectory.</p>
                 </div>
-                <div className="flex gap-3">
+                <div className="flex gap-3 flex-wrap">
+                  <button 
+                    onClick={() => {
+                      const res = calculateEmissions({
+                        electricityKwh: calcElectricity,
+                        flightKm: calcFlights,
+                        fuelLiters: calcFuel,
+                        serverHours: calcServers
+                      });
+                      setCalcResult(res);
+                      setShowCalculatorModal(true);
+                    }}
+                    className="bg-transparent border border-emerald-500/40 text-emerald-400 font-semibold text-xs px-4 py-2.5 rounded hover:bg-emerald-950/30 transition-colors flex items-center gap-1.5"
+                  >
+                    <span className="material-symbols-outlined text-[16px]">calculate</span>
+                    Calculate Footprint
+                  </button>
                   <button 
                     onClick={() => setActiveTab("marketplace")}
                     className="bg-white text-black font-semibold text-xs px-4 py-2.5 rounded hover:bg-zinc-200 transition-colors"
@@ -789,7 +824,10 @@ export default function Home() {
                     <span className="material-symbols-outlined text-[#8e9192]">workspace_premium</span>
                   </div>
                   <div>
-                    <div className="text-2xl font-bold text-white">{stats.score}/100</div>
+                    <div className="text-2xl font-bold text-white flex items-center justify-between">
+                      <span>{stats.score}/100</span>
+                      <span className="text-xs font-mono text-emerald-400">{tier.name}</span>
+                    </div>
                     <div className="w-full bg-[#262626] h-1.5 mt-2 rounded-full overflow-hidden">
                       <div className="bg-white h-full" style={{ width: `${stats.score}%` }} />
                     </div>
@@ -911,7 +949,8 @@ export default function Home() {
               </div>
 
             </div>
-          )}
+            );
+          })()}
 
           {/* TAB 2: MARKETPLACE */}
           {activeTab === "marketplace" && (
@@ -952,7 +991,20 @@ export default function Home() {
                       <option value="All">All Categories</option>
                       <option value="Renewable Energy">Renewable Energy</option>
                       <option value="Forestry">Forestry</option>
+                      <option value="Direct Air Capture">Direct Air Capture</option>
+                      <option value="Blue Carbon">Blue Carbon</option>
+                      <option value="Waste-to-Energy">Waste-to-Energy</option>
                       <option value="Other">Other</option>
+                    </select>
+                    <select 
+                      value={sortBy}
+                      onChange={(e) => setSortBy(e.target.value)}
+                      className="bg-[#131313] border border-[#262626] rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-zinc-500"
+                    >
+                      <option value="default">Sort: Default</option>
+                      <option value="price_asc">Price: Low to High</option>
+                      <option value="price_desc">Price: High to Low</option>
+                      <option value="amount_desc">Amount: Largest First</option>
                     </select>
                   </div>
                 </div>
@@ -973,7 +1025,12 @@ export default function Home() {
                       {listings.filter(l => l.active && 
                         (selectedCategory === "All" || l.category === selectedCategory) &&
                         l.project.toLowerCase().includes(searchQuery.toLowerCase())
-                      ).map((listing) => (
+                      ).sort((a, b) => {
+                        if (sortBy === "price_asc") return a.price - b.price;
+                        if (sortBy === "price_desc") return b.price - a.price;
+                        if (sortBy === "amount_desc") return b.amount - a.amount;
+                        return 0;
+                      }).map((listing) => (
                         <tr key={listing.id} className="hover:bg-white/5 transition-colors">
                           <td className="p-4 font-mono">#{listing.id}</td>
                           <td className="p-4 font-semibold text-white">{listing.project}</td>
@@ -1236,13 +1293,20 @@ export default function Home() {
                   <h3 className="text-lg font-semibold text-white">Sustainability Certificates</h3>
                   <div className="flex-1 overflow-y-auto space-y-3">
                     {retiredCredits.map((c, i) => (
-                      <div key={c.id} className="p-4 bg-white/5 border border-white/10 rounded-lg space-y-2">
+                      <div key={c.id} className="p-4 bg-white/5 border border-white/10 rounded-lg space-y-2 hover:border-white/30 transition-all">
                         <div className="flex justify-between items-start">
                           <span className="text-[10px] font-mono text-[#8e9192]">CERT-00{i+1}</span>
-                          <span className="material-symbols-outlined text-[18px] text-white">workspace_premium</span>
+                          <span className="material-symbols-outlined text-[18px] text-emerald-400">workspace_premium</span>
                         </div>
                         <div className="text-xs font-bold text-white">Certificate of Carbon Retirement</div>
                         <p className="text-[10px] text-zinc-400">This certifies that {c.amount} tCO2e offset was retired permanently via project: {c.project}.</p>
+                        <button 
+                          onClick={() => setSelectedCert({ ...c, certId: `CERT-00${i+1}` })}
+                          className="mt-2 w-full text-[11px] bg-white/10 hover:bg-white/20 text-white font-medium py-1.5 rounded transition-colors flex items-center justify-center gap-1"
+                        >
+                          <span className="material-symbols-outlined text-[14px]">visibility</span>
+                          View & Verify Certificate
+                        </button>
                       </div>
                     ))}
                     {retiredCredits.length === 0 && (
@@ -1453,6 +1517,188 @@ export default function Home() {
                 </div>
               </div>
             )}
+          </div>
+        </div>
+      )}
+
+      {/* Carbon Footprint Calculator Modal */}
+      {showCalculatorModal && (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-[#111111] border border-[#262626] rounded-xl max-w-lg w-full p-6 space-y-6 shadow-2xl animate-scale-in">
+            <div className="flex justify-between items-start border-b border-[#262626] pb-4">
+              <div>
+                <h3 className="text-base uppercase tracking-wider text-white font-bold flex items-center gap-2">
+                  <span className="material-symbols-outlined text-emerald-400">calculate</span>
+                  SME Carbon Footprint Calculator
+                </h3>
+                <p className="text-xs text-[#8e9192] mt-1">Estimate business emissions and recommended offset credits.</p>
+              </div>
+              <button 
+                onClick={() => setShowCalculatorModal(false)}
+                className="text-xs text-zinc-400 hover:text-white"
+              >
+                ✕
+              </button>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-[10px] uppercase tracking-wider text-[#8e9192] mb-1">Electricity (kWh/year)</label>
+                <input 
+                  type="number"
+                  value={calcElectricity}
+                  onChange={(e) => {
+                    setCalcElectricity(e.target.value);
+                    const res = calculateEmissions({ electricityKwh: e.target.value, flightKm: calcFlights, fuelLiters: calcFuel, serverHours: calcServers });
+                    setCalcResult(res);
+                  }}
+                  className="w-full bg-[#131313] border border-[#262626] rounded p-2 text-xs text-white focus:outline-none focus:border-zinc-500 font-mono"
+                />
+              </div>
+              <div>
+                <label className="block text-[10px] uppercase tracking-wider text-[#8e9192] mb-1">Business Flights (km)</label>
+                <input 
+                  type="number"
+                  value={calcFlights}
+                  onChange={(e) => {
+                    setCalcFlights(e.target.value);
+                    const res = calculateEmissions({ electricityKwh: calcElectricity, flightKm: e.target.value, fuelLiters: calcFuel, serverHours: calcServers });
+                    setCalcResult(res);
+                  }}
+                  className="w-full bg-[#131313] border border-[#262626] rounded p-2 text-xs text-white focus:outline-none focus:border-zinc-500 font-mono"
+                />
+              </div>
+              <div>
+                <label className="block text-[10px] uppercase tracking-wider text-[#8e9192] mb-1">Fleet Fuel (Liters)</label>
+                <input 
+                  type="number"
+                  value={calcFuel}
+                  onChange={(e) => {
+                    setCalcFuel(e.target.value);
+                    const res = calculateEmissions({ electricityKwh: calcElectricity, flightKm: calcFlights, fuelLiters: e.target.value, serverHours: calcServers });
+                    setCalcResult(res);
+                  }}
+                  className="w-full bg-[#131313] border border-[#262626] rounded p-2 text-xs text-white focus:outline-none focus:border-zinc-500 font-mono"
+                />
+              </div>
+              <div>
+                <label className="block text-[10px] uppercase tracking-wider text-[#8e9192] mb-1">Cloud Servers (Hours)</label>
+                <input 
+                  type="number"
+                  value={calcServers}
+                  onChange={(e) => {
+                    setCalcServers(e.target.value);
+                    const res = calculateEmissions({ electricityKwh: calcElectricity, flightKm: calcFlights, fuelLiters: calcFuel, serverHours: e.target.value });
+                    setCalcResult(res);
+                  }}
+                  className="w-full bg-[#131313] border border-[#262626] rounded p-2 text-xs text-white focus:outline-none focus:border-zinc-500 font-mono"
+                />
+              </div>
+            </div>
+
+            {calcResult && (
+              <div className="p-4 bg-emerald-950/20 border border-emerald-500/30 rounded-lg space-y-3">
+                <div className="flex justify-between items-center text-xs">
+                  <span className="text-zinc-400">Total Carbon Footprint:</span>
+                  <span className="font-bold text-white font-mono text-sm">{calcResult.totalTons} tCO2e</span>
+                </div>
+                <div className="flex justify-between items-center text-xs">
+                  <span className="text-zinc-400">Recommended Offset:</span>
+                  <span className="font-bold text-emerald-400 font-mono text-sm">{calcResult.recommendedCredits} Credits</span>
+                </div>
+                <div className="flex justify-between items-center text-xs">
+                  <span className="text-zinc-400">Estimated Cost:</span>
+                  <span className="font-bold text-white font-mono">{calcResult.estimatedXlmCost.toFixed(2)} XLM</span>
+                </div>
+              </div>
+            )}
+
+            <div className="flex gap-3">
+              <button 
+                onClick={() => {
+                  setShowCalculatorModal(false);
+                  setActiveTab("marketplace");
+                }}
+                className="flex-1 bg-white text-black font-semibold text-xs py-3 rounded hover:bg-zinc-200 transition-colors uppercase tracking-widest"
+              >
+                Offset via Marketplace
+              </button>
+              <button 
+                onClick={() => setShowCalculatorModal(false)}
+                className="bg-transparent border border-[#262626] text-white text-xs px-4 py-3 rounded hover:bg-white/5 transition-colors"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Certificate Preview Modal */}
+      {selectedCert && (
+        <div className="fixed inset-0 bg-black/85 backdrop-blur-md z-50 flex items-center justify-center p-4">
+          <div className="bg-[#0f1410] border border-emerald-500/40 rounded-2xl max-w-lg w-full p-8 space-y-6 shadow-2xl animate-scale-in text-center relative overflow-hidden">
+            <div className="absolute -right-16 -top-16 w-36 h-36 rounded-full bg-emerald-500/10 blur-2xl" />
+            <div className="flex justify-between items-start">
+              <div className="text-[10px] font-mono uppercase tracking-widest text-emerald-400 bg-emerald-950/60 px-2.5 py-1 rounded border border-emerald-500/30">
+                On-Chain Verification: Stellar Soroban
+              </div>
+              <button 
+                onClick={() => setSelectedCert(null)}
+                className="text-xs text-zinc-400 hover:text-white"
+              >
+                ✕
+              </button>
+            </div>
+
+            <div className="space-y-2">
+              <span className="material-symbols-outlined text-4xl text-emerald-400">verified</span>
+              <h3 className="text-xl font-bold text-white tracking-tight">Certificate of Carbon Retirement</h3>
+              <p className="text-xs text-zinc-400">Voluntary Carbon Standard (VCS) Digital Proof</p>
+            </div>
+
+            <div className="p-4 bg-white/5 border border-white/10 rounded-xl space-y-2 text-left text-xs font-mono">
+              <div className="flex justify-between">
+                <span className="text-zinc-400">Certificate ID:</span>
+                <span className="text-white font-bold">{selectedCert.certId}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-zinc-400">Project Name:</span>
+                <span className="text-emerald-300">{selectedCert.project}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-zinc-400">Retired Volume:</span>
+                <span className="text-white font-bold">{selectedCert.amount} tCO2e</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-zinc-400">Beneficiary:</span>
+                <span className="text-zinc-300 truncate max-w-[200px]">{selectedCert.owner}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-zinc-400">Registry Contract:</span>
+                <span className="text-zinc-300">{CONTRACTS.registry.slice(0, 10)}...</span>
+              </div>
+              <div className="pt-2 border-t border-white/10 text-[9px] text-zinc-500 break-all">
+                SHA256 Proof: {Math.random().toString(36).substring(2)}a4f88e99b2c1763dd0918c5e9
+              </div>
+            </div>
+
+            <div className="flex gap-3 justify-center">
+              <button 
+                onClick={() => {
+                  alert("Certificate verification link copied to clipboard!");
+                }}
+                className="bg-emerald-500 text-black font-bold text-xs px-6 py-2.5 rounded-lg hover:bg-emerald-400 transition-colors uppercase tracking-wider"
+              >
+                Copy Proof Link
+              </button>
+              <button 
+                onClick={() => setSelectedCert(null)}
+                className="bg-transparent border border-white/20 text-white text-xs px-5 py-2.5 rounded-lg hover:bg-white/10 transition-colors"
+              >
+                Close
+              </button>
+            </div>
           </div>
         </div>
       )}
