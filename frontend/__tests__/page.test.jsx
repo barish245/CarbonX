@@ -26,6 +26,7 @@ vi.mock('@creit.tech/stellar-wallets-kit', () => ({
 
 import { render, screen, fireEvent } from '@testing-library/react';
 import Home from '../src/app/page';
+import { calculateEmissions, getEsgTier } from '../src/lib/calculator';
 
 describe('CarbonX Frontend App Tests', () => {
   test('renders the landing page initially', () => {
@@ -54,5 +55,36 @@ describe('CarbonX Frontend App Tests', () => {
 
     expect(screen.getByText('Marketplace Terminal')).toBeDefined();
     expect(screen.getByText('Open Listings')).toBeDefined();
+  });
+
+  test('opens carbon footprint calculator modal', () => {
+    render(<Home />);
+    fireEvent.click(screen.getByText('Enter Terminal'));
+
+    const calcBtn = screen.getByText('Calculate Footprint');
+    fireEvent.click(calcBtn);
+
+    expect(screen.getByText('SME Carbon Footprint Calculator')).toBeDefined();
+    expect(screen.getByText('Offset via Marketplace')).toBeDefined();
+  });
+
+  test('calculates correct emission factors', () => {
+    const res = calculateEmissions({
+      electricityKwh: 10000,
+      flightKm: 2000,
+      fuelLiters: 500,
+      serverHours: 1000
+    });
+
+    expect(res.totalTons).toBeGreaterThan(0);
+    expect(res.recommendedCredits).toBeGreaterThanOrEqual(1);
+    expect(res.breakdown.electricity).toBeCloseTo(4.2, 1);
+  });
+
+  test('determines correct ESG tier badges', () => {
+    expect(getEsgTier(95).name).toBe('Platinum');
+    expect(getEsgTier(80).name).toBe('Gold');
+    expect(getEsgTier(65).name).toBe('Silver');
+    expect(getEsgTier(40).name).toBe('Bronze');
   });
 });
