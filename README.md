@@ -225,8 +225,8 @@ The following security audits and production improvements were implemented and t
 
 | Suite | Tests | Status |
 |-------|-------|--------|
-| Frontend (Vitest) | 3 tests |  All Passing |
-| Rust Contracts | 1 test (Full Flow) |  All Passing |
+| Frontend (Vitest) | 6 tests |  All Passing |
+| Rust Contracts | 4 test suites (Full Flow, Governance, Fees, Batch) |  All Passing |
 
 ```bash
 # Run contract tests
