@@ -1437,7 +1437,7 @@ export default function Home() {
                           <span className="font-bold text-white">{f.user}</span>
                           <span className="text-[10px] text-zinc-500 font-mono">{f.wallet}</span>
                         </div>
-                        <p className="text-zinc-300 italic">"{f.feedback}"</p>
+                        <p className="text-zinc-300 italic">&quot;{f.feedback}&quot;</p>
                         <div className="text-[10px] text-yellow-400">{f.rating}</div>
                       </div>
                     ))}
@@ -1679,7 +1679,7 @@ export default function Home() {
                 <span className="text-zinc-300">{CONTRACTS.registry.slice(0, 10)}...</span>
               </div>
               <div className="pt-2 border-t border-white/10 text-[9px] text-zinc-500 break-all">
-                SHA256 Proof: {Math.random().toString(36).substring(2)}a4f88e99b2c1763dd0918c5e9
+                SHA256 Proof: 8g4jd7sja4f88e99b2c1763dd0918c5e9
               </div>
             </div>
 
