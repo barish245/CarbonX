@@ -275,34 +275,4 @@ CarbonX/
 │   │       └── telemetry.js      # Telemetry logging helper
 ```
 
----
-
-##  Roadmap
-
-###  Level 3 (Complete)
-- 5 Soroban smart contracts with Inter-Contract Communication.
-- Next.js frontend with Freighter wallet integration.
-- Real-time contract event logging dashboard.
-
-###  Level 4 (Complete)
-- Visual Telemetry & Diagnostics dashboard.
-- Clear transactional loading spinners and error alerts.
-- Vercel Analytics and Speed Insights tracking.
-- Floating Google Form feedback button.
-- 10+ real users onboarded with wallet proofs saved in Sheets.
-- Clean Git log under new author `barish245`.
-
-###  Level 5 (Complete)
-- On-chain verifier reputation system.
-- Advanced carbon project search and categorization filters.
-- Enterprise pitch deck for voluntary carbon credits markets.
-- Scaled up to 50 active users with improved onboarding flow.
-
-###  Level 6 (Planned)
-- Security audit of all 5 contracts.
-- Mainnet deployment.
-- Fee Sponsorship for gasless SME onboarding.
-
----
-
 *Built for the RiseIn Stellar Bootcamp — Level 5 Blue Belt*
